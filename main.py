@@ -9,6 +9,7 @@ def ExtractFile(path) :
         filereader = csv.reader(file)
         filereader = [i[0].split(';') for i in list(filereader)]
         filereader = [list(map(float,i)) for i in filereader]
+        random.shuffle(filereader)
         return filereader
 
 
