@@ -72,13 +72,14 @@ if __name__ == '__main__':
     
     #test all accuracy values 20 times, then make a graph
     
-    accuracy = [i for i in range(1,50)]
+    accuracy = [i for i in range(1,70)]
     result = np.zeros(len(accuracy))
     for i in range(20) :
         result_temp= np.zeros(len(accuracy))
 
         for i in range(len(accuracy)) :
-            result_temp[i] = Resultat(dataset,0.8,i+1)
+            result_temp[i] = Resultat(dataset,0.7,i+1)
+            print(i)
         
         print('end')
         if i == 0 :
@@ -91,10 +92,11 @@ if __name__ == '__main__':
     key = np.argsort(result)
     result = np.take(result,key)
     accuracy = np.take(accuracy,key)
-    plt.show()
-
     print("result : ",result[-1])
     print("accuracy : ",accuracy[-1])
+    plt.show()
+
+    
 
 
 

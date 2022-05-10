@@ -1,17 +1,15 @@
 import csv
 import random
 import math
-import numpy as np
 # from matplotlib import testing
-
+import numpy as np
+import matplotlib.pyplot as plt
 def ExtractFile(path) :
     with open(path,newline='') as file :
         global y,x
         filereader = csv.reader(file)
         filereader = [i[0].split(';') for i in list(filereader)]
         filereader = [list(map(float,i)) for i in filereader]
-        y = np.array([i[-1] for i in filereader])
-        x = np.array([i[:-1] for i in filereader])
         random.shuffle(filereader)
         return filereader
 
@@ -73,4 +71,26 @@ if __name__ == '__main__':
     training_dataset = dataset[:int(len(dataset)*0.8)]
     testing_dataset = dataset[int(len(dataset)*0.8):]
     
-    print(Resultat(training_dataset,testing_dataset,1))
+    accuracy = [i for i in range(1,70)]
+    result = np.zeros(len(accuracy))
+    for i in range(20) :
+        result_temp= np.zeros(len(accuracy))
+
+        for i in range(len(accuracy)) :
+            result_temp[i] = Resultat(dataset,testing_dataset,i+1)
+            print(i)
+        
+        print('end')
+        if i == 0 :
+            result = result_temp
+        else :
+            result = (result + result_temp)/2
+    
+    print()
+    plt.plot(accuracy,result)
+    key = np.argsort(result)
+    result = np.take(result,key)
+    accuracy = np.take(accuracy,key)
+    print("result : ",result[-1])
+    print("accuracy : ",accuracy[-1])
+    plt.show()
