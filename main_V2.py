@@ -1,6 +1,5 @@
 import csv
 import random
-import math
 import numpy as np
 # from matplotlib import testing
 
@@ -11,10 +10,9 @@ def ExtractFile(path) :
         filereader = [i[0].split(';') for i in list(filereader)]
         filereader = [list(map(float,i)) for i in filereader]
         random.shuffle(filereader)
-        y = np.array([i[-1] for i in filereader])
         x = np.array([i[:-1] for i in filereader])
+        y = np.array([i[-1] for i in filereader])
         return x,y
-        # return filereader
 
 
 def KNN(x : np.array,y:np.array, data : np.array, accuracy=4 ) :
@@ -22,14 +20,18 @@ def KNN(x : np.array,y:np.array, data : np.array, accuracy=4 ) :
     distance = np.zeros(len(x))
 
     for i in range(len(x)) :
-        distance[i] = np.sum((x[i] - data)**2)
+        temp = (np.sum((x[i] - data)**2)) 
+        if temp != 0 :
+            distance[i] = 1/temp
+        else : 
+            distance[i] = 100000000000000000000
     
     keys = np.argsort(distance)
     # temp_x = np.take(x,keys)
     distance = np.take(distance,keys)
     temp_y = np.take(y,keys)
-    temp_y = temp_y[:accuracy]
-    distance = distance[:accuracy]
+    temp_y = temp_y[-accuracy:]
+    distance = distance[-accuracy:]
     
     
     
@@ -67,4 +69,4 @@ if __name__ == '__main__':
     # print(dataset)
     # print(type(dataset[0]))
 
-    print(Resultat(dataset,0.8,20))
+    print(Resultat(dataset,0.5,10))
