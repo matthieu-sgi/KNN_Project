@@ -17,7 +17,7 @@ def ExtractFile(path) :
         # return filereader
 
 
-def KNN(x : np.array, data : np.array, accuracy=4 ) :
+def KNN(x : np.array,y:np.array, data : np.array, accuracy=4 ) :
     
     distance = np.zeros(len(x))
 
@@ -27,14 +27,14 @@ def KNN(x : np.array, data : np.array, accuracy=4 ) :
     keys = np.argsort(distance)
     # temp_x = np.take(x,keys)
     distance = np.take(distance,keys)
-    # temp_y = np.take(y,keys)
-    
+    temp_y = np.take(y,keys)
+    temp_y = temp_y[:accuracy]
     distance = distance[:accuracy]
     
     
     
-    
-    return 0 if sum(distance)/accuracy<0.5 else 1
+    # print(sum(temp_y)/accuracy)
+    return 0 if (sum(temp_y)/accuracy)<0.5 else 1
 
 
 def Resultat(dataset : tuple,prop_test :float , accuracy=4):
@@ -44,7 +44,7 @@ def Resultat(dataset : tuple,prop_test :float , accuracy=4):
     
     for i in range(len(test_dataset[0])) :
         # print('ici')
-        temp = KNN(training_dataset[0],test_dataset[0][i],accuracy)
+        temp = KNN(training_dataset[0],training_dataset[1],test_dataset[0][i],accuracy)
         # print(test_dataset[i][1])
         if temp == test_dataset[1][i] :
             counter += 1
@@ -67,4 +67,4 @@ if __name__ == '__main__':
     # print(dataset)
     # print(type(dataset[0]))
 
-    print(Resultat(dataset,0.8,1))
+    print(Resultat(dataset,0.8,20))
