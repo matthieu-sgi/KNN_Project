@@ -38,10 +38,9 @@ def KNN(x : np.array,y:np.array, data : np.array, accuracy=4 ) :
     return 0 if (sum(temp_y)/accuracy)<=0.5 else 1
 
 
-def Resultat(dataset : tuple,prop_test :float , accuracy=4):
+def Resultat(training_dataset : tuple,test_dataset :tuple , accuracy=4):
     counter = 0
-    training_dataset = [dataset[0][:int(prop_test*len(dataset[0]))],dataset[1][:int(prop_test*len(dataset[0]))]]
-    test_dataset = [dataset[0][int(prop_test*len(dataset[0])):],dataset[1][int(prop_test*len(dataset[0])):]]
+    
     
     for i in range(len(test_dataset[0])) :
         # print('ici')
@@ -65,6 +64,7 @@ def Resultat(dataset : tuple,prop_test :float , accuracy=4):
 if __name__ == '__main__':
 
     dataset = ExtractFile("data.txt")
+    testing_dataset = ExtractFile("preTest.txt")
     # print(dataset)
     # print(type(dataset[0]))
 
@@ -74,18 +74,15 @@ if __name__ == '__main__':
     
     accuracy = [i for i in range(1,70)]
     result = np.zeros(len(accuracy))
-    for i in range(20) :
-        result_temp= np.zeros(len(accuracy))
 
-        for i in range(len(accuracy)) :
-            result_temp[i] = Resultat(dataset,0.7,i+1)
-            print(i)
+
+
+    for i in range(len(accuracy)) :
+        result[i] = Resultat(dataset,testing_dataset,i+1)
         
-        print('end')
-        if i == 0 :
-            result = result_temp
-        else :
-            result = (result + result_temp)/2
+    
+    print('end')
+
     
     print()
     plt.plot(accuracy,result)
@@ -96,7 +93,6 @@ if __name__ == '__main__':
     print("accuracy : ",accuracy[-1])
     plt.show()
 
-    
 
 
 
