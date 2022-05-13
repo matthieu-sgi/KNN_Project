@@ -72,7 +72,7 @@ if __name__ == '__main__':
     
     #test all accuracy values 20 times, then make a graph
     
-    accuracy = [i for i in range(1,70)]
+    accuracy = [i for i in range(1,100)]
     result = np.zeros(len(accuracy))
 
 
