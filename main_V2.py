@@ -9,9 +9,12 @@ def ExtractFile(path) :
         filereader = np.genfromtxt(file,delimiter=';')
 
         np.random.shuffle(filereader)
-        
-        x = np.array([i[:-1] for i in filereader])
-        y = np.array([i[-1] for i in filereader])
+        if len(filereader[0]) == 11 :
+            x = np.array([i[:-1] for i in filereader])
+            y = np.array([i[-1] for i in filereader])
+        else:
+            x = np.array([i for i in filereader])
+            y = 0
         return x,y
 
 
@@ -36,6 +39,14 @@ def KNN(x : np.array,y:np.array, data : np.array, accuracy=4 ) :
     
     # print(sum(temp_y)/accuracy)
     return 0 if (sum(temp_y)/accuracy)<=0.5 else 1
+
+def Writing(training_dataset :np.array ,dataset:np.array,accuracy=4) :
+    with open('result.txt','w') as file :
+        # file.write('id;label\n')
+        for i in range(len(dataset[0])) :
+            temp = KNN(training_dataset[0],training_dataset[1],dataset[0][i],accuracy)
+            file.write(str(temp)+'\n')
+    
 
 
 def Resultat(training_dataset : tuple,test_dataset :tuple , accuracy=4):
@@ -62,36 +73,40 @@ def Resultat(training_dataset : tuple,test_dataset :tuple , accuracy=4):
 
 
 if __name__ == '__main__':
-
-    dataset = ExtractFile("data.txt")
-    testing_dataset = ExtractFile("preTest.txt")
+    training_dataset = ExtractFile('data.txt')
+    dataset = ExtractFile('finalTest.txt')
+    Writing(training_dataset,dataset,20)
     # print(dataset)
     # print(type(dataset[0]))
 
     # print(Resultat(dataset,0.8,40))
     
     #test all accuracy values 20 times, then make a graph
-    
-    accuracy = [i for i in range(1,100)]
-    result = np.zeros(len(accuracy))
+    ########################### Finding the best accuracy (k) value ###############################
+    # dataset = ExtractFile("data.txt")
+    # testing_dataset = ExtractFile("preTest.txt")
+    # accuracy = [i for i in range(1,100)]
+    # result = np.zeros(len(accuracy))
 
 
 
-    for i in range(len(accuracy)) :
-        result[i] = Resultat(dataset,testing_dataset,i+1)
+    # for i in range(len(accuracy)) :
+    #     result[i] = Resultat(dataset,testing_dataset,i+1)
         
     
-    print('end')
+    # print('end')
 
     
-    print()
-    plt.plot(accuracy,result)
-    key = np.argsort(result)
-    result = np.take(result,key)
-    accuracy = np.take(accuracy,key)
-    print("result : ",result[-1])
-    print("accuracy : ",accuracy[-1])
-    plt.show()
+    # print()
+    # plt.plot(accuracy,result)
+    # key = np.argsort(result)
+    # result = np.take(result,key)
+    # accuracy = np.take(accuracy,key)
+    # print("result : ",result[-1])
+    # print("accuracy : ",accuracy[-1])
+    # plt.show()
+    ################################################################################################
+
 
 
 
