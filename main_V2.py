@@ -2,6 +2,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 # from matplotlib import testing
+import time
 
 def ExtractFile(path) :
     with open(path,newline='') as file :
@@ -73,9 +74,18 @@ def Resultat(training_dataset : tuple,test_dataset :tuple , accuracy=4):
 
 
 if __name__ == '__main__':
-    training_dataset = ExtractFile('data.txt')
+
+    # chronometer
+    start_time = time.time()
+    training_dataset_1 = ExtractFile('data.txt')
+    training_dataset_2 = ExtractFile('preTest.txt')
+    training_dataset = [np.concatenate((training_dataset_1[0],training_dataset_2[0]),axis=0),np.concatenate((training_dataset_1[1],training_dataset_2[1]),axis=0)]
+    
     dataset = ExtractFile('finalTest.txt')
     Writing(training_dataset,dataset,20)
+    stop_time = time.time()
+    print('Finished !!')
+    print('Temps d\'execution : ',stop_time - start_time,'s',sep='')
     # print(dataset)
     # print(type(dataset[0]))
 
